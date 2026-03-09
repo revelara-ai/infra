@@ -28,11 +28,11 @@ patches:
               - name: postgres
                 resources:
                   requests:
-                    memory: "128Mi"
-                    cpu: "50m"
-                  limits:
-                    memory: "512Mi"
+                    memory: "256Mi"
                     cpu: "500m"
+                  limits:
+                    memory: "1Gi"
+                    cpu: "1"
         volumeClaimTemplates:
           - metadata:
               name: data
