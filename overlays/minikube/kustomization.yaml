@@ -6,6 +6,7 @@ namespace: default
 resources:
   - ../../base/postgres
   - ../../base/redis
+  - persistent-volumes.yaml
 
 # ConfigMap for postgres init scripts
 configMapGenerator:
@@ -16,6 +17,7 @@ configMapGenerator:
 # Local development patches
 patches:
   # Reduce resource requirements for local development
+  # Use persistent-local StorageClass so data survives container recreation
   - patch: |-
       apiVersion: apps/v1
       kind: StatefulSet
@@ -37,10 +39,11 @@ patches:
           - metadata:
               name: data
             spec:
+              storageClassName: persistent-local
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:
-                  storage: 1Gi
+                  storage: 5Gi
   - patch: |-
       apiVersion: apps/v1
       kind: StatefulSet
@@ -62,6 +65,7 @@ patches:
           - metadata:
               name: data
             spec:
+              storageClassName: persistent-local
               accessModes: ["ReadWriteOnce"]
               resources:
                 requests:

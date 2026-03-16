@@ -1,0 +1,49 @@
+# Static PVs using /var/data/ — the only path backed by a persistent Docker
+# volume in minikube's Docker-driver container.  The default hostpath
+# provisioner uses /tmp/hostpath-provisioner/ which lives on a block device
+# inside the container's ephemeral layer and is lost when the container is
+# recreated (e.g. WSL2/Docker reboots).
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: persistent-local
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgres
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: persistent-local
+  hostPath:
+    path: /var/data/postgres
+    type: DirectoryOrCreate
+  claimRef:
+    namespace: default
+    name: data-postgres-0
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-redis
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: persistent-local
+  hostPath:
+    path: /var/data/redis
+    type: DirectoryOrCreate
+  claimRef:
+    namespace: default
+    name: data-redis-0
