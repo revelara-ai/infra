@@ -1,0 +1,74 @@
+name: Deploy Infrastructure to Production
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'base/**'
+      - 'overlays/prod/**'
+      - '.github/workflows/deploy-prod.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GKE_CLUSTER: ${{ vars.GKE_CLUSTER }}
+  GKE_ZONE: ${{ vars.GKE_ZONE }}
+  NAMESPACE: prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+
+      - name: Create namespace if not exists
+        run: |
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy infrastructure with kustomize
+        run: kubectl apply -k overlays/prod
+
+      - name: Wait for CNPG cluster
+        run: |
+          kubectl wait --for=condition=Ready \
+            cluster/relynce-db \
+            -n ${{ env.NAMESPACE }} \
+            --timeout=600s
+
+      - name: Wait for redis
+        run: |
+          kubectl rollout status statefulset/redis \
+            -n ${{ env.NAMESPACE }} \
+            --timeout=120s
+
+      - name: Show deployment status
+        if: always()
+        run: |
+          echo "=== CNPG Cluster ==="
+          kubectl get cluster -n ${{ env.NAMESPACE }}
+          echo "=== CNPG Pooler ==="
+          kubectl get pooler -n ${{ env.NAMESPACE }}
+          echo "=== StatefulSets ==="
+          kubectl get statefulsets -n ${{ env.NAMESPACE }}
+          echo "=== Pods ==="
+          kubectl get pods -n ${{ env.NAMESPACE }}
+          echo "=== Services ==="
+          kubectl get svc -n ${{ env.NAMESPACE }}
+          echo "=== PVCs ==="
+          kubectl get pvc -n ${{ env.NAMESPACE }}

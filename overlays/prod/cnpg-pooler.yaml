@@ -1,0 +1,21 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: relynce-db-pooler
+  namespace: prod
+spec:
+  cluster:
+    name: relynce-db
+  instances: 2
+  type: rw
+  pgbouncer:
+    poolMode: transaction
+    parameters:
+      max_client_conn: "200"
+      default_pool_size: "25"
+      min_pool_size: "5"
+      reserve_pool_size: "5"
+      reserve_pool_timeout: "3"
+      server_reset_query: "DISCARD ALL"
+      server_check_query: "SELECT 1"
+      server_check_delay: "10"

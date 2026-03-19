@@ -1,0 +1,72 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: relynce-db
+  namespace: prod
+spec:
+  instances: 2
+
+  imageName: paradedb/paradedb:1.15.0-pg17
+
+  postgresql:
+    parameters:
+      shared_preload_libraries: "pg_search,pg_cron"
+      max_connections: "200"
+      shared_buffers: "256MB"
+      effective_cache_size: "768MB"
+      work_mem: "4MB"
+      maintenance_work_mem: "64MB"
+      statement_timeout: "15s"
+    pg_hba:
+      - "host all all 10.0.0.0/8 md5"
+
+  bootstrap:
+    initdb:
+      database: polaris
+      owner: incident
+      postInitApplicationSQL:
+        - "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\""
+        - "CREATE EXTENSION IF NOT EXISTS vector"
+        - "CREATE EXTENSION IF NOT EXISTS pg_search"
+        - "CREATE EXTENSION IF NOT EXISTS pg_cron"
+        - "CREATE ROLE polaris_admin WITH BYPASSRLS"
+        - "CREATE ROLE polaris_app WITH NOINHERIT"
+        - "CREATE USER polaris_api WITH LOGIN PASSWORD 'PLACEHOLDER_CHANGE_ME'"
+        - "GRANT CONNECT ON DATABASE polaris TO polaris_api"
+        - "GRANT USAGE ON SCHEMA public TO polaris_api"
+        - "GRANT polaris_app TO polaris_api"
+        - "GRANT polaris_admin TO polaris_api"
+        - "ALTER DEFAULT PRIVILEGES FOR ROLE incident IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO polaris_api"
+        - "ALTER DEFAULT PRIVILEGES FOR ROLE incident IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO polaris_api"
+        - "CREATE DATABASE incident_crawler"
+        - "CREATE DATABASE incident_pipeline"
+
+  storage:
+    size: 50Gi
+    storageClass: premium-rwo
+
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "1"
+    limits:
+      memory: "4Gi"
+      cpu: "2"
+
+  backup:
+    barmanObjectStore:
+      destinationPath: "gs://relynce-backups-prod/cnpg/"
+      googleCredentials:
+        gkeEnvironment: true
+    retentionPolicy: "14d"
+
+  monitoring:
+    enablePodMonitor: true
+
+  minSyncReplicas: 1
+  maxSyncReplicas: 1
+
+  nodeMaintenanceWindow:
+    inProgress: false
+
+  enablePDB: true
