@@ -1,0 +1,8 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ImageCatalog
+metadata:
+  name: paradedb
+spec:
+  images:
+    - major: 17
+      image: paradedb/paradedb:1.15.0-pg17

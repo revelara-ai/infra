@@ -6,11 +6,17 @@ metadata:
 spec:
   instances: 2
 
-  imageName: paradedb/paradedb:1.15.0-pg17
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ImageCatalog
+    name: paradedb
+    major: 17
 
   postgresql:
+    shared_preload_libraries:
+      - pg_search
+      - pg_cron
     parameters:
-      shared_preload_libraries: "pg_search,pg_cron"
       max_connections: "200"
       shared_buffers: "256MB"
       effective_cache_size: "768MB"
