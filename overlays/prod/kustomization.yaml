@@ -5,6 +5,8 @@ namespace: prod
 
 resources:
   - ../../base/redis
+  - serviceaccount.yaml
+  - secret-store.yaml
   - paradedb-image-catalog.yaml
   - cnpg-cluster.yaml
   - cnpg-pooler.yaml
