@@ -49,8 +49,8 @@ spec:
         - "GRANT polaris_admin TO polaris_api"
         - "ALTER DEFAULT PRIVILEGES FOR ROLE incident IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO polaris_api"
         - "ALTER DEFAULT PRIVILEGES FOR ROLE incident IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO polaris_api"
-        - "CREATE DATABASE incident_crawler"
-        - "CREATE DATABASE incident_pipeline"
+        - "CREATE DATABASE incident_crawler OWNER incident"
+        - "CREATE DATABASE incident_pipeline OWNER incident"
 
   storage:
     size: 50Gi
