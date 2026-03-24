@@ -80,4 +80,9 @@ spec:
   nodeMaintenanceWindow:
     inProgress: false
 
+  serviceAccountTemplate:
+    metadata:
+      annotations:
+        iam.gke.io/gcp-service-account: cnpg-backup@incident-kb.iam.gserviceaccount.com
+
   enablePDB: true
