@@ -1,0 +1,268 @@
+{
+  "displayName": "Infrastructure - Production",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "xPos": 0,
+        "yPos": 0,
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "",
+          "text": {
+            "content": "## CNPG PostgreSQL",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 1,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Active Backends",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "cnpg_backends_total"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "backends"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 4,
+        "yPos": 1,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Max Transaction Duration",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "cnpg_backends_max_tx_duration_seconds"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "seconds"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 8,
+        "yPos": 1,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Replication Lag",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "cnpg_pg_replication_lag"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "seconds"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 5,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Database Size",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "cnpg_pg_database_size_bytes"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "bytes"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 5,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Connection Utilization",
+          "scorecard": {
+            "timeSeriesQuery": {
+              "prometheusQuery": "cnpg_backends_total / 200"
+            },
+            "thresholds": [
+              {
+                "value": 0.8,
+                "color": "YELLOW",
+                "direction": "ABOVE",
+                "label": "Warning"
+              },
+              {
+                "value": 0.95,
+                "color": "RED",
+                "direction": "ABOVE",
+                "label": "Critical"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 10,
+        "width": 12,
+        "height": 1,
+        "widget": {
+          "title": "",
+          "text": {
+            "content": "## Redis",
+            "format": "MARKDOWN"
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 11,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Memory Usage",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "redis_memory_used_bytes"
+                },
+                "plotType": "LINE",
+                "legendTemplate": "used"
+              },
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "redis_memory_max_bytes"
+                },
+                "plotType": "LINE",
+                "legendTemplate": "max"
+              }
+            ],
+            "yAxis": {
+              "label": "bytes"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 11,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Connected Clients",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "redis_connected_clients"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "clients"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 15,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Commands/s",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "rate(redis_commands_processed_total[5m])"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "cmds/s"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 4,
+        "yPos": 15,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Hit Rate",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "rate(redis_keyspace_hits_total[5m]) / (rate(redis_keyspace_hits_total[5m]) + rate(redis_keyspace_misses_total[5m]) + 0.001)"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "ratio"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 8,
+        "yPos": 15,
+        "width": 4,
+        "height": 4,
+        "widget": {
+          "title": "Evictions",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "prometheusQuery": "rate(redis_evicted_keys_total[5m])"
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "yAxis": {
+              "label": "keys/s"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

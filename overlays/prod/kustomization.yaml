@@ -13,9 +13,15 @@ resources:
   - cnpg-pooler.yaml
   - cnpg-scheduled-backup.yaml
   - redis-backup-cronjob.yaml
+  - redis-pod-monitoring.yaml
+  - alerting-rules.yaml
 
 patches:
   - path: redis-patch.yaml
+    target:
+      kind: StatefulSet
+      name: redis
+  - path: redis-exporter-patch.yaml
     target:
       kind: StatefulSet
       name: redis

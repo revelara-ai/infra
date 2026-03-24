@@ -1,0 +1,63 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: Rules
+metadata:
+  name: infrastructure-alerts
+  labels:
+    component: infrastructure
+spec:
+  groups:
+    - name: cnpg-postgres
+      interval: 30s
+      rules:
+        - alert: CNPGReplicationLag
+          expr: cnpg_pg_replication_lag > 10
+          for: 5m
+          labels:
+            severity: warning
+            service: cnpg
+          annotations:
+            summary: "PostgreSQL replication lag > 10s"
+            description: "Replication lag at {{ $value | humanize }}s. Replica may be falling behind."
+
+        - alert: CNPGHighConnectionUtilization
+          expr: cnpg_backends_total / 200 > 0.8
+          for: 5m
+          labels:
+            severity: warning
+            service: cnpg
+          annotations:
+            summary: "PostgreSQL connections > 80% of max_connections (200)"
+            description: "{{ $value | humanizePercentage }} of max connections in use."
+
+        - alert: CNPGLongRunningTransaction
+          expr: cnpg_backends_max_tx_duration_seconds > 300
+          for: 1m
+          labels:
+            severity: warning
+            service: cnpg
+          annotations:
+            summary: "Long-running transaction > 5 minutes"
+            description: "Longest transaction running for {{ $value | humanize }}s."
+
+    - name: redis
+      interval: 30s
+      rules:
+        - alert: RedisHighMemoryUsage
+          expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.85
+          for: 5m
+          labels:
+            severity: warning
+            service: redis
+          annotations:
+            summary: "Redis memory usage > 85%"
+            description: "Redis memory at {{ $value | humanizePercentage }} of maxmemory."
+
+        - alert: RedisDown
+          expr: redis_up == 0
+          for: 1m
+          labels:
+            severity: critical
+            service: redis
+          annotations:
+            summary: "Redis is down"
+            description: "Redis exporter cannot connect to Redis instance."
