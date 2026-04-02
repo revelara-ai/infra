@@ -8,3 +8,5 @@ resources:
   - external-secret.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - device-plugin.yaml
+  - proxy-class.yaml
