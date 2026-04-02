@@ -1,0 +1,8 @@
+# The Tailscale operator Helm chart creates its own RBAC, but it needs
+# permission to create proxy pods in other namespaces (polaris-dev, prod).
+# This ClusterRoleBinding grants the operator's service account the
+# ability to manage resources across namespaces.
+#
+# NOTE: The Helm chart handles most RBAC automatically. This file exists
+# as documentation and for any additional cross-namespace permissions
+# that may be needed. Review after initial deployment.
