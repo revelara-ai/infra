@@ -10,7 +10,7 @@ data:
   oidc.config: |
     name: Google
     issuer: https://accounts.google.com
-    clientID: PLACEHOLDER_REPLACE_WITH_GOOGLE_CLIENT_ID
+    clientID: 920238007287-10b315s7nk3ih0p4cut59jf8rl5a7t35.apps.googleusercontent.com
     clientSecret: $oidc.google.clientSecret
     requestedScopes:
       - openid
