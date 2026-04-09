@@ -26,6 +26,12 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/args/-
         value: --leader-election-namespace=cert-manager
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --dns01-recursive-nameservers=8.8.8.8:53,8.8.4.4:53
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --dns01-recursive-nameservers-only
   - target:
       kind: Deployment
       name: cert-manager-cainjector
