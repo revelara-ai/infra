@@ -8,3 +8,17 @@ resources:
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.4/install.yaml
   - dashboard.yaml
   - dashboard-service.yaml
+
+patches:
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: ClusterRole
+      name: argo-rollouts
+    patch: |
+      - op: add
+        path: /rules/-
+        value:
+          apiGroups: [""]
+          resources: ["namespaces"]
+          verbs: ["get", "list", "watch"]
