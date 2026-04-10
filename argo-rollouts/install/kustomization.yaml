@@ -22,13 +22,3 @@ patches:
           apiGroups: [""]
           resources: ["namespaces"]
           verbs: ["get", "list", "watch"]
-  # Bind Workload Identity so the controller can query GCP Cloud Monitoring
-  # for canary analysis (monitoring.viewer role on argo-rollouts@ GSA)
-  - target:
-      version: v1
-      kind: ServiceAccount
-      name: argo-rollouts
-    patch: |
-      - op: add
-        path: /metadata/annotations/iam.gke.io~1gcp-service-account
-        value: argo-rollouts@incident-kb.iam.gserviceaccount.com
