@@ -20,3 +20,6 @@ rendered/
 # Helm
 charts/
 *.tgz
+
+# Pulumi compiled binaries
+pulumi/dns/dns

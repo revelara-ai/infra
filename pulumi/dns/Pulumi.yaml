@@ -1,0 +1,8 @@
+name: revelara-dns
+runtime:
+  name: go
+  options:
+    binary: dns
+description: Google Cloud DNS zone and records for revelara.ai
+backend:
+  url: gs://revelara-pulumi-state

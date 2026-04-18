@@ -1,0 +1,7 @@
+config:
+  gcp:project: incident-kb
+  revelara-dns:domain: revelara.ai
+  revelara-dns:prodIP: "35.190.21.244"
+  revelara-dns:devIP: "34.8.112.227"
+secretsprovider: gcpkms://projects/incident-kb/locations/us-central1/keyRings/pulumi/cryptoKeys/pulumi-secrets
+encryptedkey: CiQAyQki4aUc/FAPyMqyUbcufhpkOOKsCqItVMupeNrg3W89QWQSSQDCMAPb/0miOdr4JYRrge9kxnNKp47qhomRd/7nkoSlka8ww8+s/dGFf6TcK7RHEmgUsQTGPNF5w5Ddv/OtDPGFu4Bydukhj/c=
