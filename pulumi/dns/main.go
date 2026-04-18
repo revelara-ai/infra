@@ -143,6 +143,8 @@ func main() {
 				pulumi.String("\"v=spf1 include:_spf.google.com include:sendgrid.net ~all\""),
 				// Google Workspace domain verification
 				pulumi.String("\"google-site-verification=1j2eEVjEaYeyBQv9PiWZ4mM-2Zak1X0g6y-V-CcyHUc\""),
+				// WorkOS domain verification
+				pulumi.String("\"work-os-domain-verification-34x536=cykoqgMk5itcsUPtb9czPGjS9\""),
 			},
 		})
 		if err != nil {
