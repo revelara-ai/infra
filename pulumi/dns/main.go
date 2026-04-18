@@ -174,7 +174,7 @@ func main() {
 			Type:        pulumi.String("TXT"),
 			Ttl:         pulumi.Int(60),
 			Rrdatas: pulumi.StringArray{
-				pulumi.String("\"p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDiCn31Bjv4LAHvi3amH9uUjnVPXVKfPXQvwW/9GfLyoDhhvfRo1t2gI7z3ibj302vv63CC4DDsMNriUvx/kaOuTrZmXTpENkRym1p4KAtQfwEIorENhrxDF/PZX6PcFbD68mVs6sDEpsUnL38ivTYo2kmO2mMhb1QHFq/S+QmMKwIDAQAB\""),
+				pulumi.String("\"p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8/uX7V7HuUp/ewfrtqZxLkz/umzVm9nwKXkSBv27NQDnCNHxWQMS9LqEXpqUSU5px5csEFqlt8gKigJB28VNm4ATsxcT25DP4OL8Rt73huGfXcFIMUZ0WmDJ9IB+/BrPAMU1J1+eyUnKcHwYqB9Zz8husTN8qhBPAvlcwVs6MGQIDAQAB\""),
 			},
 		})
 		if err != nil {
