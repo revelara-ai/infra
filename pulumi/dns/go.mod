@@ -1,4 +1,4 @@
-module github.com/relynce/infra/pulumi/dns
+module github.com/revelara-ai/infra/pulumi/dns
 
 go 1.25.8
 

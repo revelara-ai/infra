@@ -6,5 +6,5 @@ data:
   policy.default: role:readonly
   policy.csv: |
     # Relynce team members get admin access
-    g, joseph@relynce.ai, role:admin
+    g, joseph@revelara.ai, role:admin
   scopes: '[email]'

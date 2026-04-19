@@ -20,7 +20,7 @@ echo "--- Reserving static IP ---"
 gcloud compute addresses create relynce-prod-ip --global --project="${PROJECT_ID}" 2>/dev/null || echo "Static IP already exists"
 IP=$(gcloud compute addresses describe relynce-prod-ip --global --project="${PROJECT_ID}" --format='get(address)')
 echo "Static IP: ${IP}"
-echo "ACTION REQUIRED: Create DNS A records for app.relynce.ai and api.relynce.ai -> ${IP}"
+echo "ACTION REQUIRED: Create DNS A records for app.revelara.ai and api.revelara.ai -> ${IP}"
 echo ""
 
 # 2. Create GCS buckets with versioning + uniform access
@@ -138,7 +138,7 @@ done
 # Set known values
 echo -n "polaris_api" | gcloud secrets versions add relynce-prod-db-user --data-file=- --project="${PROJECT_ID}" 2>/dev/null || true
 echo -n "incident" | gcloud secrets versions add relynce-prod-migrate-db-user --data-file=- --project="${PROJECT_ID}" 2>/dev/null || true
-echo -n "https://api.relynce.ai/api/v1/auth/workos/callback" | gcloud secrets versions add relynce-prod-workos-redirect-uri --data-file=- --project="${PROJECT_ID}" 2>/dev/null || true
+echo -n "https://api.revelara.ai/api/v1/auth/workos/callback" | gcloud secrets versions add relynce-prod-workos-redirect-uri --data-file=- --project="${PROJECT_ID}" 2>/dev/null || true
 
 # Generate random passwords
 DB_PW=$(openssl rand -base64 32 | tr -d '/+=' | head -c 32)
@@ -162,7 +162,7 @@ echo ""
 echo "=== Setup Complete ==="
 echo ""
 echo "Next steps:"
-echo "  1. Create DNS A records: app.relynce.ai -> ${IP}, api.relynce.ai -> ${IP}"
+echo "  1. Create DNS A records: app.revelara.ai -> ${IP}, api.revelara.ai -> ${IP}"
 echo "  2. Install CNPG operator: kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.25/releases/cnpg-1.25.1.yaml"
 echo "  3. Deploy infra: kubectl apply -k overlays/prod/"
 echo "  4. Pre-install DB extensions as superuser (see runbook Phase 4)"

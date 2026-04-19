@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/relynce/pipeline
+    repoURL: https://github.com/revelara-ai/pipeline
     targetRevision: main
     path: k8s/overlays/prod
   destination:

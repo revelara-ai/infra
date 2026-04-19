@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/relynce/admin
+    repoURL: https://github.com/revelara-ai/admin
     targetRevision: main
     path: k8s/overlays/dev
   destination:
